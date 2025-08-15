@@ -98,12 +98,17 @@ exports.login = async (req, res) => {
 // GET PROFILE (Protected)
 exports.getProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.user.id).select('-password'); // password exclude
+
     if (!user) {
-      return res.status(404).send({ message: "User not found" });
+      return res.status(404).json({ message: 'User not found' });
     }
-    res.send(user);
+
+    res.json({
+      message: 'Profile fetched successfully',
+      data: user
+    });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
