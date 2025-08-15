@@ -15,7 +15,7 @@ const feedbackSchema = new mongoose.Schema({
     },
     mood:{
         type: String,
-        enum: ['happy', 'angry', 'sad','calm','curious'],
+        enum: ['Happy', 'Angry', 'Sad','Calm','Curious'],
         default: 'neutral'
     }
 },{timestamps: true});
