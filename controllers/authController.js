@@ -112,3 +112,43 @@ exports.getProfile = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+ // Update profile
+exports.updateProfile = async (req, res) => {
+  try {
+    const { name, email, company, phoneNumber, location } = req.body;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { name, email, company, phoneNumber, location },
+      { new: true, runValidators: true }
+    ).select('-password');
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      message: "Profile updated successfully",
+      data: updatedUser
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+// 📌 Delete profile
+exports.deleteProfile = async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.user.id);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "Profile deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
